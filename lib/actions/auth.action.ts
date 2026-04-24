@@ -124,7 +124,7 @@ export async function getCurrentUser(): Promise<User | null> {
         id: decodedClaims.uid,
         name: decodedClaims.name || "User",
         email: decodedClaims.email,
-      } as any;
+      } as User;
     }
 
     return {

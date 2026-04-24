@@ -106,9 +106,19 @@ const AuthForm = ({ type }: { type: FormType }) => {
         toast.success("Signed in successfully.");
         router.push("/");
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(`There was an error: ${error}`);
+    } catch (error: any) {
+      console.error(error);
+      if (error?.code === "auth/invalid-credential") {
+        toast.error("Invalid email or password. Please try again.");
+      } else if (error?.code === "auth/email-already-in-use") {
+        toast.error("This email is already in use. Please sign in instead.");
+      } else if (error?.code === "auth/user-not-found") {
+        toast.error("No account found with this email. Please sign up.");
+      } else if (error?.code === "auth/wrong-password") {
+        toast.error("Incorrect password. Please try again.");
+      } else {
+        toast.error(error?.message || "An unexpected error occurred. Please try again.");
+      }
     }
   };
 

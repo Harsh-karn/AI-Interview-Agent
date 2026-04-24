@@ -242,9 +242,18 @@ const Agent = ({
   };
 
   const handleUserResponse = (response: string) => {
-    // For now, just log the response
-    console.log("User response:", response);
-    // In a real implementation, this would send the response to the AI
+    if (callStatus !== CallStatus.ACTIVE) return;
+    
+    vapi.send({
+      type: "add-message",
+      message: {
+        role: "user",
+        content: response,
+      },
+    });
+
+    setMessages((prev) => [...prev, { role: "user", content: response }]);
+    setLastMessage(response);
   };
 
   // Reset error and try again
